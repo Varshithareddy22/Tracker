@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>21 Day Challenge</title>
+  <style>
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+      background: #f5f7fb;
+      color: #172033
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: auto;
+      padding: 24px 16px 50px
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 29px
+    }
+
+    .sub,
+    .mini {
+      color: #667085;
+      font-size: 13px
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e7eaf0;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 5px 20px #1720330a
+    }
+
+    .names {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #667085;
+      display: block;
+      margin-bottom: 7px
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d9dee8;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+      background: #fff
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #667eea
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 16px
+    }
+
+    .progressbox {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .person {
+      padding: 14px;
+      border: 1px solid #e7eaf0;
+      border-radius: 14px
+    }
+
+    .person h3 {
+      margin: 0 0 8px
+    }
+
+    .bar {
+      height: 9px;
+      background: #edf0f5;
+      border-radius: 99px;
+      overflow: hidden
+    }
+
+    .fill {
+      height: 100%;
+      background: #667eea;
+      border-radius: 99px;
+      width: 0;
+      transition: width .2s
+    }
+
+    .stat {
+      font-size: 12px;
+      color: #667085;
+      margin-top: 7px
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+      margin-top: 14px
+    }
+
+    .day {
+      height: 40px;
+      border: 0;
+      border-radius: 9px;
+      background: #eef1f6;
+      cursor: pointer;
+      font-weight: 750;
+      color: #667085
+    }
+
+    .day.active {
+      background: #172033;
+      color: #fff
+    }
+
+    .day.done {
+      box-shadow: inset 0 -4px #35b779
+    }
+
+    .day.partial {
+      box-shadow: inset 0 -4px #f0ad4e
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 0 13px
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 20px
+    }
+
+    .tasks {
+      display: grid;
+      gap: 9px
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid #e7eaf0;
+      border-radius: 11px;
+      cursor: pointer;
+      margin: 0;
+      color: #172033
+    }
+
+    .task input {
+      width: 18px;
+      height: 18px;
+      margin: 0
+    }
+
+    .task span {
+      font-weight: 650
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 7px;
+      border-radius: 99px;
+      background: #f0f2f6;
+      color: #667085;
+      margin-left: auto
+    }
+
+    .badge.required {
+      background: #eef2ff;
+      color: #4b5bdc
+    }
+
+    .badge.optional {
+      background: #fff5e8;
+      color: #a76400
+    }
+
+    .note {
+      margin-top: 14px
+    }
+
+    .note textarea {
+      min-height: 95px;
+      resize: vertical
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px
+    }
+
+    button {
+      font: inherit
+    }
+
+    .save {
+      border: 0;
+      background: #172033;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 750;
+      cursor: pointer
+    }
+
+    .secondary {
+      border: 1px solid #d9dee8;
+      background: #fff;
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .danger {
+      color: #a33;
+      border-color: #efcaca
+    }
+
+    .calendar {
+      margin-top: 16px
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px
+    }
+
+    .cal-head {
+      font-size: 12px;
+      font-weight: 800;
+      color: #667085;
+      text-align: center;
+      padding: 5px
+    }
+
+    .cal-cell {
+      min-height: 72px;
+      border: 1px solid #e7eaf0;
+      border-radius: 10px;
+      padding: 7px;
+      background: #fff;
+      cursor: pointer
+    }
+
+    .cal-cell.muted {
+      background: #f8f9fb;
+      color: #a0a7b3
+    }
+
+    .cal-cell.today {
+      outline: 2px solid #667eea
+    }
+
+    .cal-cell .num {
+      font-size: 12px;
+      font-weight: 800
+    }
+
+    .cal-cell .marks {
+      margin-top: 7px;
+      font-size: 15px;
+      line-height: 1.35
+    }
+
+    .cal-cell.done {
+      background: #f1fbf6;
+      border-color: #bde8cf
+    }
+
+    .cal-cell.partial {
+      background: #fffaf0;
+      border-color: #f3d79d
+    }
+
+    .month-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px
+    }
+
+    .month-controls h3 {
+      margin: 0
+    }
+
+    .month-buttons {
+      display: flex;
+      gap: 7px
+    }
+
+    .settings {
+      margin-top: 16px
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    .task-editor {
+      display: grid;
+      gap: 8px
+    }
+
+    .task-row {
+      display: flex;
+      gap: 8px
+    }
+
+    .task-row input {
+      flex: 1
+    }
+
+    .hidden {
+      display: none
+    }
+
+    @media(max-width:800px) {
+
+      .top,
+      .names,
+      .settings-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:520px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column
+      }
+
+      .progressbox {
+        grid-template-columns: 1fr
+      }
+
+      .cal-cell {
+        min-height: 60px
+      }
+
+      .days {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px
+      }
+
+      .day {
+        height: 36px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>🔥 21 Day Challenge</h1>
+        <div class="sub">Track the work. Keep the streak.</div>
+      </div>
+      <button class="secondary danger" onclick="resetAll()">Reset all</button>
+    </header>
+
+    <div class="card names">
+      <div><label>Your name</label><input id="name1" placeholder="Enter your name"></div>
+      <div><label>Friend's name</label><input id="name2" placeholder="Enter friend's name"></div>
+      <div><label>Challenge start date</label><input id="startDate" type="date"></div>
+    </div>
+
+    <div class="top">
+      <div class="card">
+        <div class="section-title">
+          <h2>21-Day Progress</h2>
+          <span class="mini" id="selectedLabel">Day 1</span>
+        </div>
+        <div class="progressbox">
+          <div class="person">
+            <h3 id="p1">Person 1</h3>
+            <div class="bar">
+              <div class="fill" id="bar1"></div>
+            </div>
+            <div class="stat" id="stat1"></div>
+          </div>
+          <div class="person">
+            <h3 id="p2">Friend</h3>
+            <div class="bar">
+              <div class="fill" id="bar2"></div>
+            </div>
+            <div class="stat" id="stat2"></div>
+          </div>
+        </div>
+        <div class="days" id="days"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h2>Daily Entry</h2><span class="mini" id="dayTitle">Day 1</span>
+        </div>
+        <label>Updating for</label>
+        <select id="personSelect"></select>
+        <div class="tasks" id="tasks" style="margin-top:12px"></div>
+        <div class="note"><label>What did you work on today?</label><textarea id="note"
+            placeholder="Write a short update..."></textarea></div>
+        <div class="actions"><button class="save" onclick="saveEntry()">Save Day</button></div>
+      </div>
+    </div>
+
+    <div class="card calendar">
+      <div class="month-controls">
+        <h3 id="monthTitle">Calendar</h3>
+        <div class="month-buttons">
+          <button class="secondary" onclick="changeMonth(-1)">←</button>
+          <button class="secondary" onclick="changeMonth(1)">→</button>
+        </div>
+      </div>
+      <div class="calendar-grid" id="calendar"></div>
+    </div>
+
+    <div class="card settings">
+      <div class="section-title">
+        <h2>Edit Tasks</h2><span class="mini">Changes apply to new and existing days</span>
+      </div>
+      <div class="settings-grid">
+        <div>
+          <label>Default tasks — every day</label>
+          <div class="task-editor" id="defaultTaskEditor"></div>
+          <div class="actions" style="justify-content:flex-start"><button class="secondary" onclick="addDefaultTask()">+
+              Add default task</button></div>
+        </div>
+        <div>
+          <label>Rules</label>
+          <div class="mini" style="line-height:1.6">
+            🎓 College can be switched on for any day.<br>
+            🚀 Weekly Project appears only on Saturday and Sunday.<br>
+            📚 Study/Coding is a default task, so it can be completed on all days.
+          </div>
+          <div class="actions" style="justify-content:flex-start"><button class="secondary"
+              onclick="saveTaskSettings()">Save task settings</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT_TASKS = ["📚 Study / Coding", "🏃 Exercise", "🎉 Entertainment", "💬 Communication", "📱 Applications"];
+    const COLLEGE_TASK = "🎓 College";
+    const PROJECT_TASK = "🚀 Weekly Project";
+
+    let data = JSON.parse(localStorage.getItem("challenge21") || "{}");
+    let selectedDay = 1;
+    let selectedPerson = 0;
+    let calendarDate = new Date();
+
+    function save() { localStorage.setItem("challenge21", JSON.stringify(data)); }
+
+    function localDateString(d) {
+      const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+    function parseLocalDate(s) {
+      const [y, m, d] = s.split("-").map(Number);
+      return new Date(y, m - 1, d);
+    }
+    function getChallengeDate(day) {
+      const d = parseLocalDate(data.startDate);
+      d.setDate(d.getDate() + day - 1);
+      return d;
+    }
+    function getDayNumber(date) {
+      const start = parseLocalDate(data.startDate);
+      const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const diff = Math.floor((d - start) / 86400000) + 1;
+      return diff >= 1 && diff <= 21 ? diff : null;
+    }
+    function getTasks(day) {
+      const tasks = [...data.defaultTasks];
+      const e = data.entries[selectedPerson + "-" + day];
+      if (e && e.college) tasks.push(COLLEGE_TASK);
+      const date = getChallengeDate(day);
+      if (date.getDay() === 0 || date.getDay() === 6) tasks.push(PROJECT_TASK);
+      return tasks;
+    }
+    function ensure() {
+      data.names = data.names || ["Person 1", "Friend"];
+      data.startDate = data.startDate || localDateString(new Date());
+      data.defaultTasks = Array.isArray(data.defaultTasks) ? data.defaultTasks : [...DEFAULT_TASKS];
+      data.entries = data.entries || {};
+      for (let p = 0; p < 2; p++) for (let d = 1; d <= 21; d++) {
+        const k = p + "-" + d;
+        if (!data.entries[k]) data.entries[k] = { tasks: {}, note: "", college: false };
+      }
+    }
+    function renderNames() {
+      document.getElementById("name1").value = data.names[0] || "";
+      document.getElementById("name2").value = data.names[1] || "";
+      document.getElementById("startDate").value = data.startDate;
+      document.getElementById("p1").textContent = data.names[0] || "Person 1";
+      document.getElementById("p2").textContent = data.names[1] || "Friend";
+      const s = document.getElementById("personSelect");
+      s.innerHTML = data.names.map((n, i) => `<option value="${i}">${escapeHtml(n || ("Person " + (i + 1)))}</option>`).join("");
+      s.value = selectedPerson;
+    }
+    function escapeHtml(v) { return String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c])); }
+
+    function getCompletion(p, d) {
+      const e = data.entries[p + "-" + d];
+      const tasks = getTasksForPerson(p, d, e);
+      const done = tasks.filter(t => !!e.tasks[t]).length;
+      return { done, total: tasks.length, complete: done === tasks.length };
+    }
+    function getTasksForPerson(p, day, e) {
+      const tasks = [...data.defaultTasks];
+      if (e.college) tasks.push(COLLEGE_TASK);
+      const date = getChallengeDate(day);
+      if (date.getDay() === 0 || date.getDay() === 6) tasks.push(PROJECT_TASK);
+      return tasks;
+    }
+    function completedDays(p) {
+      let n = 0;
+      for (let d = 1; d <= 21; d++) if (getCompletion(p, d).complete) n++;
+      return n;
+    }
+    function renderProgress() {
+      for (let p = 0; p < 2; p++) {
+        const n = completedDays(p), pct = Math.round(n / 21 * 100);
+        document.getElementById("bar" + (p + 1)).style.width = pct + "%";
+        document.getElementById("stat" + (p + 1)).textContent = `${n} / 21 days • ${pct}% complete`;
+      }
+    }
+    function renderDays() {
+      const el = document.getElementById("days"); el.innerHTML = "";
+      for (let d = 1; d <= 21; d++) {
+        const c = getCompletion(selectedPerson, d);
+        const b = document.createElement("button");
+        b.className = "day" + (d === selectedDay ? " active " : " ") + (c.complete ? "done" : (c.done > 0 ? "partial" : ""));
+        b.textContent = d;
+        b.title = `Day ${d}: ${c.done}/${c.total} tasks`;
+        b.onclick = () => { selectedDay = d; calendarDate = getChallengeDate(d); loadEntry(); renderDays(); renderCalendar(); };
+        el.appendChild(b);
+      }
+    }
+    function loadEntry() {
+      document.getElementById("selectedLabel").textContent = "Day " + selectedDay;
+      document.getElementById("dayTitle").textContent = "Day " + selectedDay;
+      const e = data.entries[selectedPerson + "-" + selectedDay];
+      const tasks = getTasks(selectedDay);
+
+      document.getElementById("tasks").innerHTML = tasks.map((t, i) => {
+        const isCollege = t === COLLEGE_TASK;
+        const isProject = t === PROJECT_TASK;
+        const checked = !!e.tasks[t];
+        return `<label class="task">
+      <input type="checkbox" data-task="${escapeHtml(t)}" ${checked ? "checked" : ""}>
+      <span>${escapeHtml(t)}</span>
+      <span class="badge ${isCollege || isProject ? "optional" : "required"}">${isCollege ? "Flexible" : isProject ? "Weekend" : "Default"}</span>
+    </label>`;
+      }).join("");
+
+      document.getElementById("note").value = e.note || "";
+    }
+    function saveEntry() {
+      const k = selectedPerson + "-" + selectedDay, e = data.entries[k];
+      const tasks = getTasks(selectedDay);
+      e.tasks = e.tasks || {};
+      document.querySelectorAll("#tasks input").forEach(x => { e.tasks[x.dataset.task] = x.checked; });
+      e.note = document.getElementById("note").value;
+      // College is controlled independently so it can be assigned to any two days.
+      e.college = !!e.tasks[COLLEGE_TASK];
+      delete e.tasks[COLLEGE_TASK];
+      save(); renderProgress(); renderDays(); renderCalendar(); loadEntry();
+    }
+    document.getElementById("personSelect").addEventListener("change", e => { selectedPerson = +e.target.value; loadEntry(); renderDays(); renderCalendar(); });
+
+    ["name1", "name2"].forEach((id, i) => document.getElementById(id).addEventListener("change", e => {
+      data.names[i] = e.target.value.trim() || ("Person " + (i + 1)); save(); renderNames();
+    }));
+    document.getElementById("startDate").addEventListener("change", e => {
+      if (!e.target.value) return;
+      data.startDate = e.target.value; selectedDay = 1; calendarDate = parseLocalDate(data.startDate);
+      save(); renderDays(); loadEntry(); renderProgress(); renderCalendar();
+    });
+
+    function renderTaskEditor() {
+      const el = document.getElementById("defaultTaskEditor");
+      el.innerHTML = data.defaultTasks.map((t, i) => `
+    <div class="task-row">
+      <input value="${escapeHtml(t)}" data-task-index="${i}">
+      <button class="secondary" onclick="removeDefaultTask(${i})">Remove</button>
+    </div>`).join("");
+    }
+    function addDefaultTask() { data.defaultTasks.push("New Task"); renderTaskEditor(); }
+    function removeDefaultTask(i) { if (data.defaultTasks.length <= 1) return; data.defaultTasks.splice(i, 1); renderTaskEditor(); }
+    function saveTaskSettings() {
+      const inputs = document.querySelectorAll("[data-task-index]");
+      data.defaultTasks = [...inputs].map(x => x.value.trim()).filter(Boolean);
+      save(); renderTaskEditor(); renderProgress(); renderDays(); loadEntry(); renderCalendar();
+    }
+
+    function changeMonth(delta) { calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + delta, 1); renderCalendar(); }
+    function renderCalendar() {
+      const el = document.getElementById("calendar"); el.innerHTML = "";
+      const y = calendarDate.getFullYear(), m = calendarDate.getMonth();
+      document.getElementById("monthTitle").textContent = calendarDate.toLocaleString(undefined, { month: "long", year: "numeric" });
+      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(x => { const h = document.createElement("div"); h.className = "cal-head"; h.textContent = x; el.appendChild(h); });
+      const first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
+      for (let i = 0; i < first; i++) { const c = document.createElement("div"); c.className = "cal-cell muted"; el.appendChild(c); }
+      for (let n = 1; n <= days; n++) {
+        const date = new Date(y, m, n), dayNo = getDayNumber(date), c = document.createElement("div");
+        c.className = "cal-cell";
+        if (localDateString(date) === localDateString(new Date())) c.classList.add("today");
+        if (dayNo) {
+          const comp = getCompletion(selectedPerson, dayNo);
+          if (comp.complete) c.classList.add("done"); else if (comp.done > 0) c.classList.add("partial");
+          const e = data.entries[selectedPerson + "-" + dayNo];
+          let marks = comp.complete ? "✅" : (comp.done > 0 ? "🟡" : "");
+          if (e.college) marks += " 🎓";
+          if (date.getDay() === 0 || date.getDay() === 6) marks += " 🚀";
+          c.onclick = () => { selectedDay = dayNo; loadEntry(); renderDays(); };
+          c.innerHTML = `<div class="num">${n} · D${dayNo}</div><div class="marks">${marks}</div>`;
+        } else {
+          c.innerHTML = `<div class="num">${n}</div>`;
+        }
+        el.appendChild(c);
+      }
+    }
+    function resetAll() { if (confirm("Delete all tracker data?")) { localStorage.removeItem("challenge21"); location.reload(); } }
+
+    ensure(); renderNames(); renderProgress(); renderDays(); loadEntry(); renderTaskEditor(); renderCalendar();
+  </script>
+</body>
+
+</html>
