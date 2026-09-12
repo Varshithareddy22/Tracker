@@ -3,7 +3,7 @@
 Simple one-page tracker.
 
 Features:
-- Two editable names
+- Two editable names 
 - Editable challenge start date
 - Default tasks: Study/Coding, Exercise, Entertainment, Communication, Applications
 - College can be assigned to any day
