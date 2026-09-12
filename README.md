@@ -4,7 +4,7 @@ Simple one-page tracker.
 
 Features:
 - Two editable names 
-- Editable challenge start date
+- Editable challenge start date 
 - Default tasks: Study/Coding, Exercise, Entertainment, Communication, Applications
 - College can be assigned to any day
 - Weekly Project automatically appears on Saturday and Sunday
